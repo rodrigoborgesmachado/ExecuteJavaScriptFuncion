@@ -17,6 +17,8 @@ namespace ExecuteJavaScriptFuncion
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Prin());
+            //Application.Run(new DoTerra());
+            // Application.Run(new NavegaVerbos());
         }
     }
 }

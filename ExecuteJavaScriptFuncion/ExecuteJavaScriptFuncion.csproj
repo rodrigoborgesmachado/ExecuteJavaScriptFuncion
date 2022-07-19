@@ -38,6 +38,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Numerics" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -49,6 +50,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DoTerra.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DoTerra.Designer.cs">
+      <DependentUpon>DoTerra.cs</DependentUpon>
+    </Compile>
+    <Compile Include="NavegaVerbos.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="NavegaVerbos.Designer.cs">
+      <DependentUpon>NavegaVerbos.cs</DependentUpon>
+    </Compile>
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -58,7 +71,15 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Util\Funcoes.cs" />
+    <Compile Include="Util\JavascriptFuncoes.cs" />
+    <Compile Include="Util\ListaVerbosConjugar.cs" />
     <Compile Include="Util\WebRequest.cs" />
+    <EmbeddedResource Include="DoTerra.resx">
+      <DependentUpon>DoTerra.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NavegaVerbos.resx">
+      <DependentUpon>NavegaVerbos.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>

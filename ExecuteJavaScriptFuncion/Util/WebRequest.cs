@@ -11,7 +11,7 @@ namespace ExecuteJavaScriptFuncion.Util
 {
     public class WebTest
     {
-        private static bool EnviaPessoaJsonPost(string url, string json)
+        private static bool EnviaJsonPost(string url, string json)
         {
             bool retorno = true;
             try
@@ -32,6 +32,10 @@ namespace ExecuteJavaScriptFuncion.Util
                 using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
                 {
                     var result = streamReader.ReadToEnd();
+                    if (result.ToString().Contains("false") && !result.ToString().Contains("Óleo já existe"))
+                    {
+
+                    }
                 }
             }
             catch (Exception e)
@@ -47,7 +51,7 @@ namespace ExecuteJavaScriptFuncion.Util
             bool retorno = true;
             try
             {
-                return EnviaPessoaJsonPost("http://teste.sunsalesystem.com.br/api/fordev/pessoa/inserir", json);
+                return EnviaJsonPost("http://teste.sunsalesystem.com.br/api/fordev/pessoa/inserir", json);
             }
             catch (Exception e)
             {
@@ -62,7 +66,52 @@ namespace ExecuteJavaScriptFuncion.Util
             bool retorno = true;
             try
             {
-                return EnviaPessoaJsonPost("http://teste.sunsalesystem.com.br/api/fordev/empresa/inserir", json);
+                return EnviaJsonPost("http://teste.sunsalesystem.com.br/api/fordev/empresa/inserir", json);
+            }
+            catch (Exception e)
+            {
+                retorno = false;
+            }
+
+            return retorno;
+        }
+
+        public static bool EnviaTraducaoInserir(string json)
+        {
+            bool retorno = true;
+            try
+            {
+                return EnviaJsonPost("http://teste.sunsalesystem.com.br/api/traducao/inserirTraducao", json);
+            }
+            catch (Exception e)
+            {
+                retorno = false;
+            }
+
+            return retorno;
+        }
+
+        public static bool EnviaVerboInserir(string verbo)
+        {
+            bool retorno = true;
+            try
+            {
+                return EnviaJsonPost("http://teste.sunsalesystem.com.br/api/conjugando/inserirVerbo?verbo=" + verbo, null);
+            }
+            catch (Exception e)
+            {
+                retorno = false;
+            }
+
+            return retorno;
+        }
+
+        public static bool EnviaVerboConjugadoInserir(string verbo)
+        {
+            bool retorno = true;
+            try
+            {
+                return EnviaJsonPost("http://teste.sunsalesystem.com.br/api/conjugando/inserirConjugado", verbo);
             }
             catch (Exception e)
             {
@@ -77,7 +126,52 @@ namespace ExecuteJavaScriptFuncion.Util
             bool retorno = true;
             try
             {
-                return EnviaPessoaJsonPost("http://teste.sunsalesystem.com.br/api/fordev/veiculo/inserir", json);
+                return EnviaJsonPost("http://teste.sunsalesystem.com.br/api/fordev/veiculo/inserir", json);
+            }
+            catch (Exception e)
+            {
+                retorno = false;
+            }
+
+            return retorno;
+        }
+
+        public static bool EnviaContaBancariaInserir(string json)
+        {
+            bool retorno = true;
+            try
+            {
+                return EnviaJsonPost("http://teste.sunsalesystem.com.br/api/fordev/contaBancaria/inserir", json);
+            }
+            catch (Exception e)
+            {
+                retorno = false;
+            }
+
+            return retorno;
+        }
+
+        public static bool EnviaCartaoCreditoInserir(string json)
+        {
+            bool retorno = true;
+            try
+            {
+                return EnviaJsonPost("http://teste.sunsalesystem.com.br/api/fordev/cartaoCredito/inserir", json);
+            }
+            catch (Exception e)
+            {
+                retorno = false;
+            }
+
+            return retorno;
+        }
+
+        public static bool EnviaOleoDoTerraInserir(string json)
+        {
+            bool retorno = true;
+            try
+            {
+                return EnviaJsonPost("http://teste.sunsalesystem.com.br/api/doterra/cadastrarOleo", json);
             }
             catch (Exception e)
             {
