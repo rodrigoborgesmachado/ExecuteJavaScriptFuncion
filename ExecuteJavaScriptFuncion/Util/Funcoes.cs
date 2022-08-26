@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Newtonsoft.Json;
 using System.Text;
 using System.Threading.Tasks;
+using System.Globalization;
 
 namespace ExecuteJavaScriptFuncion.Util
 {
@@ -379,6 +381,85 @@ namespace ExecuteJavaScriptFuncion.Util
                                       $"\"Classegramatical\":\"{classeGramatical}\"" +
                                   "}";
             return jsonRetorno;
+        }
+
+        public static List<string> TrataJsonQuestoes(string result)
+        {
+            List<string> lista = new List<string>();
+
+            Model.Questoes.MD_Main temp = JsonConvert.DeserializeObject<Model.Questoes.MD_Main>(RemoveDiacritics(TrataDados(result)));
+
+            temp.data.rows.ForEach(item =>
+            {
+                string texto = string.Empty;
+
+                texto += "{";
+                texto += "   \"questao\":{";
+                texto += $"      \"Campoquestao\":\"{item.enunciado_clean}\",";
+                texto += "      \"Observacaoquestao\":\"\",";
+                texto += $"      \"Materia\":\"{(item.areas.Count > 0 ? item.areas[0].descricao : string.Empty)}\",";
+                texto += "      \"Codigoprova\":\"9999\",";
+                texto += "      \"Numeroquestao\":\"999\",";
+                texto += "      \"anexosQuestao\":[";
+                texto += "";
+                texto += "      ]";
+                texto += "   },";
+                texto += "   \"respostas\":[";
+
+                bool first = true;
+                item.itens.ForEach(resposta =>
+                {
+                    if (first)
+                    {
+                        first = false;
+                    }
+                    else
+                    {
+                        texto += ",";
+                    }
+
+                    texto += "      {";
+                    texto += $"         \"Textoresposta\":\"{resposta.corpo}\",";
+                    texto += $"         \"Certa\":\"{(resposta.id == item.resposta ? "1" : "0")}\",";
+                    texto += "         \"Observacaoresposta\":\"\",";
+                    texto += "         \"anexos\":[";
+                    texto += "";
+                    texto += "         ]";
+                    texto += "      }";
+                });
+
+                texto += "   ],";
+                texto += "   \"codUsuario\":\"15\"";
+                texto += "}";
+
+                lista.Add(texto);
+            });
+
+            return lista;
+        }
+
+        private static string TrataDados(string dados)
+        {
+            return dados.Replace("style=text-align: justify;", string.Empty);
+        }
+
+        private static string RemoveDiacritics(string text)
+        {
+            //return text.Replace("\u00c0", "À").Replace("\u00c1", "Á").Replace("\u00c2", "Â").Replace("\u00c3", "Ã").Replace("\u00c4", "Ä").Replace("\u00c5", "Å").Replace("\u00c6", "Æ").Replace("\u00c7", "Ç").Replace("\u00c8", "È").Replace("\u00c9", "É").Replace("\u00ca", "Ê").Replace("\u00cb", "Ë").Replace("\u00cc", "Ì").Replace("\u00cd", "Í").Replace("\u00ce", "Î").Replace("\u00cf", "Ï").Replace("\u00d1", "Ñ").Replace("\u00d2", "Ò").Replace("\u00d3", "Ó").Replace("\u00d4", "Ô").Replace("\u00d5", "Õ").Replace("\u00d6", "Ö").Replace("\u00d8", "Ø").Replace("\u00d9", "Ù").Replace("\u00da", "Ú").Replace("\u00db", "Û").Replace("\u00dc", "Ü").Replace("\u00dd", "Ý").Replace("\u00df", "ß").Replace("\u00e0", "à").Replace("\u00e1", "á").Replace("\u00e2", "â").Replace("\u00e3", "ã").Replace("\u00e4", "ä").Replace("\u00e5", "å").Replace("\u00e6", "æ").Replace("\u00e7", "ç").Replace("\u00e8", "è").Replace("\u00e9", "é").Replace("\u00ea", "ê").Replace("\u00eb", "ë").Replace("\u00ec", "ì").Replace("\u00ed", "í").Replace("\u00ee", "î").Replace("\u00ef", "ï").Replace("\u00f0", "ð").Replace("\u00f1", "ñ").Replace("\u00f2", "ò").Replace("\u00f3", "ó").Replace("\u00f4", "ô").Replace("\u00f5", "õ").Replace("\u00f6", "ö").Replace("\u00f8", "ø").Replace("\u00f9", "ù").Replace("\u00fa", "ú").Replace("\u00fb", "û").Replace("\u00fc", "ü").Replace("\u00fd", "ý").Replace("\u00ff", "ÿ");
+            return text.Replace("u00c0", "À").Replace("u00c1", "Á").Replace("u00c2", "Â").Replace("u00c3", "Ã").Replace("u00c4", "Ä").Replace("u00c5", "Å").Replace("u00c6", "Æ").Replace("u00c7", "Ç").Replace("u00c8", "È").Replace("u00c9", "É").Replace("u00ca", "Ê").Replace("u00cb", "Ë").Replace("u00cc", "Ì").Replace("u00cd", "Í").Replace("u00ce", "Î").Replace("u00cf", "Ï").Replace("u00d1", "Ñ").Replace("u00d2", "Ò").Replace("u00d3", "Ó").Replace("u00d4", "Ô").Replace("u00d5", "Õ").Replace("u00d6", "Ö").Replace("u00d8", "Ø").Replace("u00d9", "Ù").Replace("u00da", "Ú").Replace("u00db", "Û").Replace("u00dc", "Ü").Replace("u00dd", "Ý").Replace("u00df", "ß").Replace("u00e0", "à").Replace("u00e1", "á").Replace("u00e2", "â").Replace("u00e3", "ã").Replace("u00e4", "ä").Replace("u00e5", "å").Replace("u00e6", "æ").Replace("u00e7", "ç").Replace("u00e8", "è").Replace("u00e9", "é").Replace("u00ea", "ê").Replace("u00eb", "ë").Replace("u00ec", "ì").Replace("u00ed", "í").Replace("u00ee", "î").Replace("u00ef", "ï").Replace("u00f0", "ð").Replace("u00f1", "ñ").Replace("u00f2", "ò").Replace("u00f3", "ó").Replace("u00f4", "ô").Replace("u00f5", "õ").Replace("u00f6", "ö").Replace("u00f8", "ø").Replace("u00f9", "ù").Replace("u00fa", "ú").Replace("u00fb", "û").Replace("u00fc", "ü").Replace("u00fd", "ý").Replace("u00ff", "ÿ").Replace("u201c", string.Empty).Replace("u201d", string.Empty).Replace("u2013","-").Replace("u00aa","ª").Replace("u2022","<br></li><li>").Replace("ud835udc43", "P").Replace("821d2", "->").Replace("ud835udc44", "Q").Replace("u2192", "->").Replace("u2228", "v");
+        }
+
+        /// <summary>
+        /// Método que gera um número aleatorio
+        /// </summary>
+        /// <param name="max"></param>
+        /// <returns></returns>
+        public static int NumeroAleatorio(int max)
+        {
+            Random rnd = new Random();
+            int random = rnd.Next(0, max);
+
+            return random;
         }
     }
 }

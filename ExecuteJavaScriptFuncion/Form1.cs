@@ -10,6 +10,9 @@ using System.Windows.Forms;
 using mshtml;
 using ExecuteJavaScriptFuncion.Util;
 using System.Threading;
+using System.Net;
+using System.IO;
+using RestSharp;
 
 namespace ExecuteJavaScriptFuncion
 {
@@ -94,9 +97,12 @@ namespace ExecuteJavaScriptFuncion
 
             this.webPrincipal.Navigated += delegate
             {
-                ChangeEnableButtons(true);
-                InsereGenerico();
+                //ChangeEnableButtons(true);
+                //InsereGenerico();
             };
+
+            //this.InsereQuestoesGenericas();
+            this.InsereRespostasQuestoes();
         }
 
         #endregion Construtores
@@ -172,6 +178,27 @@ namespace ExecuteJavaScriptFuncion
         {
             string json = GerarCartaoCredito();
             WebTest.EnviaCartaoCreditoInserir(json);
+        }
+
+        /// <summary>
+        /// Método que insere as questões genéricas
+        /// </summary>
+        private void InsereQuestoesGenericas()
+        {
+            List<string> listaJsons = GerarJsonsQuestoes();
+            listaJsons.ForEach(json =>
+            {
+                WebTest.EnviaJsonQuestao(json);
+            });
+        }
+
+        /// <summary>
+        /// Método que insere as respostas para questões
+        /// </summary>
+        private void InsereRespostasQuestoes()
+        {
+            QuestoesConcursoInsereUsuáriosAleatorios questoes = new QuestoesConcursoInsereUsuáriosAleatorios();
+            questoes.CriaRespostasParaUsuarios(100, 1000000);
         }
 
         /// <summary>
@@ -304,7 +331,26 @@ namespace ExecuteJavaScriptFuncion
             }
         }
 
+        /// <summary>
+        /// Método que gera os jsons das questões
+        /// </summary>
+        /// <returns></returns>
+        private List<string> GerarJsonsQuestoes()
+        {
+            List<string> list = new List<string>();
+
+            var client = new RestClient("https://rota-api.grancursosonline.com.br/open/elastic/questao?perPage=20&page=1&assunto[]=405626&resolucao=todas&anulada=0&desatualizada=0&sort=[%7B%22anos%22:%22desc%22%7D,%7B%22_score%22:%22desc%22%7D]");
+            var request = new RestRequest("GET");
+            request.AddHeader("Cookie", "__cf_bm=5fegtHtNvicCEUxtIK9cdiO8j8.C.Fk5WoeW36108ok-1659365769-0-Aemvo5kARJf66Fytvs3CI3mECrGS3zhU0A57jBy528BoeszOAjwQFnC0MwXqMRS26uq7iNYWqu1dH7pZDLrvIlc=; path=/; expires=Mon, 01-Aug-22 15:26:09 GMT; domain=.grancursosonline.com.br; HttpOnly; Secure; SameSite=None");
+            request.AddHeader("Referer", "https://questoes.grancursosonline.com.br/");
+            RestResponse response = client.Execute(request);
+            Console.WriteLine(response.Content);
+            list = Funcoes.TrataJsonQuestoes(constClass.param);
+
+            return list;
+        }
+
         #endregion Métodos
-        
+
     }
 }

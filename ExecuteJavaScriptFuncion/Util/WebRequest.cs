@@ -32,10 +32,6 @@ namespace ExecuteJavaScriptFuncion.Util
                 using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
                 {
                     var result = streamReader.ReadToEnd();
-                    if (result.ToString().Contains("false") && !result.ToString().Contains("Óleo já existe"))
-                    {
-
-                    }
                 }
             }
             catch (Exception e)
@@ -97,6 +93,21 @@ namespace ExecuteJavaScriptFuncion.Util
             try
             {
                 return EnviaJsonPost("http://teste.sunsalesystem.com.br/api/conjugando/inserirVerbo?verbo=" + verbo, null);
+            }
+            catch (Exception e)
+            {
+                retorno = false;
+            }
+
+            return retorno;
+        }
+
+        public static bool EnviaJsonQuestao(string json)
+        {
+            bool retorno = true;
+            try
+            {
+                return EnviaJsonPost("http://localhost:57965/api/concursando/questoes/InserirQuestao", json);
             }
             catch (Exception e)
             {
