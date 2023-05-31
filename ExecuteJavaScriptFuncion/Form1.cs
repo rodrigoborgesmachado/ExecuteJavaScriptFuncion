@@ -198,7 +198,7 @@ namespace ExecuteJavaScriptFuncion
         private void InsereRespostasQuestoes()
         {
             QuestoesConcursoInsereUsuáriosAleatorios questoes = new QuestoesConcursoInsereUsuáriosAleatorios();
-            questoes.CriaRespostasParaUsuarios(100, 1000000);
+            questoes.CriaRespostasParaUsuarios(100, 70000);
         }
 
         /// <summary>
